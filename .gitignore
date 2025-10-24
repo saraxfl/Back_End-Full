@@ -1,0 +1,10 @@
+# Para proyectos Node.js/React:
+cat > .gitignore << EOF
+node_modules/
+.next/
+dist/
+build/
+.env*
+.DS_Store
+*.log
+EOF
