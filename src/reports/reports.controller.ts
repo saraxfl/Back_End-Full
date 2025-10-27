@@ -52,7 +52,10 @@ export class ReportsController {
             filename: fileName,
         }),
         fileFilter,
-        limits: { fileSize: 8 * 1024 * 1024 },
+        limits: {
+      fileSize: 8_000_000, 
+      files:8 ,            
+    },
     }),
 )
 async create(
@@ -110,7 +113,9 @@ return this.reports.createReport({
       {
         storage: diskStorage({ destination: 'public/uploads', filename: fileName }),
         fileFilter: imageOnlyFilter,
-        limits: { fileSize: 8 * 1024 * 1024 },
+        limits: {
+      fileSize: 8_000_000, 
+      files: 8,             },
       },
     ),
   )
