@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { createPool, Pool, RowDataPacket, ResultSetHeader } from 'mysql2/promise';
+import 'dotenv/config';
 
 @Injectable()
 export class DbService implements OnModuleInit, OnModuleDestroy {
@@ -8,15 +9,14 @@ export class DbService implements OnModuleInit, OnModuleDestroy {
 
   onModuleInit(): void {
     this.pool = createPool({
-      port: 3306,
-      host: '127.0.0.1',
-      user: 'root',
-      password: 'Fn30Df19',        // ← considera mover esto a variables de entorno
-      database: 'reto_final',           // ← ojo: cuida mayúsculas/minúsculas (ver nota abajo)
+      port: Number(process.env.MYSQL_PORT) || 3306,
+      host: process.env.MYSQL_HOST || '127.0.0.1',
+      user: process.env.MYSQL_USER || 'root',
+      password: process.env.MYSQL_PASSWORD || '',
+      database: process.env.MYSQL_DATABASE || 'reto_final',
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
-      // dateStrings: true,           // (opcional) si quieres DATETIME como string
     });
   }
 
@@ -41,6 +41,6 @@ export class DbService implements OnModuleInit, OnModuleDestroy {
     sql: string,
     params: any[] = []
   ): Promise<[T, any]> {
-    return this.pool.query<T>(sql, params);
-  }
+    return this.pool.query<T>(sql, params);
+  }
 }
